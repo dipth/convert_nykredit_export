@@ -15,13 +15,15 @@ namespace ConvertNykreditExport
 
             Console.WriteLine("Converting " + inputFilename + " to " + outputFilename);
 
-            using (var sr = new StreamReader(inputFilename))
+            using (var sr = new StreamReader(inputFilename, Encoding.Default))
             {
-                using (var sw = new StreamWriter(outputFilename))
+                using (var sw = new StreamWriter(outputFilename, false, Encoding.Default))
                 {
                     string line;
                     while ((line = sr.ReadLine()) != null)
                     {
+                        if (line.StartsWith("Data hentet")) continue; // The last line that displays the data collection datetime
+
                         var fields = line.Split(';');
                         var date = fields[0].Replace('-', '/');
                         var text = fields[1];
